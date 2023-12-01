@@ -47,11 +47,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     })),
             const SizedBox(height: 40),
             TextButton(
+              style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.teal,
+                  shadowColor: Colors.red,
+                  elevation: 5),
               onPressed: () {
                 widget.onAction('start');
               },
-              child: const Text('Back to Start',
-                  style: TextStyle(fontSize: 19, color: Colors.amber)),
+              child: const Text(
+                'Back to Start',
+              ),
             )
           ],
         ),

@@ -13,8 +13,8 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   String activeScreen = 'start';
-  List<String> selectAnswers=[];
-
+  List<String> selectAnswers = [];
+  int correctAnswersCount = 0;
 
   // @override
   // void initState() {
@@ -29,34 +29,48 @@ class _QuizState extends State<Quiz> {
       activeScreen = value;
     });
   }
+
   void onRestart(String value) {
     setState(() {
-      selectAnswers=[];
+      selectAnswers = [];
+      correctAnswersCount = 0;
       activeScreen = value;
     });
   }
 
-  void onAnswerSelect(String answer){
+  void onAnswerSelect(String answer) {
     selectAnswers.add(answer);
-    if(selectAnswers.length==question.length){
+    if (selectAnswers.length == question.length) {
+      for (int i = 0; i < question.length; i++) {
+        if (selectAnswers[i] == question[i].answers[0]) {
+          correctAnswersCount++;
+        }
+      }
       setState(() {
-        activeScreen='result';
+        activeScreen = 'result';
       });
-      
     }
   }
+
   @override
   Widget build(BuildContext context) {
-     Widget? currentScreen = StartScreen(onAction: onScreenChange);
-    if(activeScreen=='start'){
-      currentScreen=StartScreen(onAction: onScreenChange);
+    Widget? currentScreen = StartScreen(onAction: onScreenChange);
+    if (activeScreen == 'start') {
+      currentScreen = StartScreen(onAction: onScreenChange);
     }
 
-    if(activeScreen=='quiz'){
-      currentScreen= QuestionScreen(onAnswer:onAnswerSelect,onAction:onScreenChange,);
+    if (activeScreen == 'quiz') {
+      currentScreen = QuestionScreen(
+        onAnswer: onAnswerSelect,
+        onAction: onScreenChange,
+      );
     }
-    if(activeScreen=='result'){
-      currentScreen= ResultScreen(onAction: onRestart,answerList:selectAnswers);
+    if (activeScreen == 'result') {
+      currentScreen = ResultScreen(
+        onAction: onRestart,
+        answerList: selectAnswers,
+        correctAnswersCount: correctAnswersCount,
+      );
     }
 
     return MaterialApp(
